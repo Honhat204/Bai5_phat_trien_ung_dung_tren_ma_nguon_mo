@@ -54,3 +54,56 @@ lưu ở bm để chấm điểm.
 ## BÀI LÀM
 # Lý thuyết
 # Thực hành
+- Tạo thư mục BT5
+Chạy:
+mkdir ~/bt5-monitor
+cd ~/bt5-monitor
+Kiểm tra xem đã thành công hay chưa : pwd
+<img width="694" height="94" alt="image" src="https://github.com/user-attachments/assets/e9c0287a-49c2-432a-ad98-63dcfc3a5c5d" />
+- Tạo file docker-compose.yml
+Chạy: nano docker-compose.yml
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/04bba456-a8ae-4d1c-a87c-4dd8aad5deb5" />
+- Khởi động các container
+Chạy: docker compose up -d
+<img width="1083" height="551" alt="image" src="https://github.com/user-attachments/assets/689ad89a-f715-4a20-bd2c-224f640546c3" />
+
+- Kiểm tra container
+Chạy: docker ps
+<img width="1841" height="243" alt="image" src="https://github.com/user-attachments/assets/62e6ad2b-50ba-434a-9013-b0a90fa61b34" />
+
+- Kiểm tra Node-RED
+  > - Mở trình duyệt:http://localhost:1880
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/33a338db-1be9-42ac-9b4e-7dac1e9141a9" />
+- Kiểm tra Grafana
+Mở: http://localhost:3000
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/1bc0b261-089d-452e-8b15-3b45a120507f" />
+
+- Kiểm tra InfluxDB
+Mở: http://localhost:8086
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/455d91ea-d50e-4e04-9b2a-0cd95b1e2ee1" />
+
+- Kiểm tra MariaDB
+docker exec -it mariadb_bt5 mariadb -u root -p
+- <img width="1083" height="226" alt="image" src="https://github.com/user-attachments/assets/f16a9cfe-da80-4cc3-a226-3ce20ff004e2" />
+
+- Kiểm tra các database: SHOW DATABASES;
+<img width="396" height="269" alt="image" src="https://github.com/user-attachments/assets/ff451dd7-0325-4f32-a3e1-ce65c20e3181" />
+
+- Chọn database: USE monitordb;
+- Tạo bảng realtime_data
+<img width="506" height="204" alt="image" src="https://github.com/user-attachments/assets/cb23201d-e375-4788-9464-f8700eb4d62d" />
+- Kiểm tra bảng đã tạo: SHOW TABLES;
+<img width="381" height="172" alt="image" src="https://github.com/user-attachments/assets/6b1c0a47-adbf-467a-aa16-4800a0cb56d0" />
+
+- Chèn thử dữ liệu mẫu
+<img width="681" height="94" alt="image" src="https://github.com/user-attachments/assets/5ca172ee-b88d-4c63-aec2-bf139cdec2b9" />
+
+- Kiểm tra dữ liệu: SELECT * FROM realtime_data;
+<img width="525" height="534" alt="image" src="https://github.com/user-attachments/assets/9bbde619-c696-436a-a254-b751582cf748" />
+
+
+
+
+
+
+
