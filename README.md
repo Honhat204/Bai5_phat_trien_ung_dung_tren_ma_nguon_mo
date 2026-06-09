@@ -101,6 +101,9 @@ docker exec -it mariadb_bt5 mariadb -u root -p
 - Kiểm tra dữ liệu: SELECT * FROM realtime_data;
 <img width="525" height="534" alt="image" src="https://github.com/user-attachments/assets/9bbde619-c696-436a-a254-b751582cf748" />
 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6ea07afa-4279-4b95-81bd-730c8b5e97a5" />
+
+
 
 
 
