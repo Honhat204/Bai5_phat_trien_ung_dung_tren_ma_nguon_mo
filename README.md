@@ -72,15 +72,19 @@ Chạy: docker ps
 <img width="1841" height="243" alt="image" src="https://github.com/user-attachments/assets/62e6ad2b-50ba-434a-9013-b0a90fa61b34" />
 
 - Kiểm tra Node-RED
-  > - Mở trình duyệt:http://localhost:1880
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/33a338db-1be9-42ac-9b4e-7dac1e9141a9" />
+  > - Mở trình duyệt:http://192.168.1.18:1880
+  
+<img width="808" height="392" alt="image" src="https://github.com/user-attachments/assets/c085ba39-5f59-4095-bd6b-471bc11def70" />
+
 - Kiểm tra Grafana
-Mở: http://localhost:3000
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/1bc0b261-089d-452e-8b15-3b45a120507f" />
+Mở: http://192.168.1.18:3000
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/016442fd-0bdf-4cfa-9e91-9fbd13c7628c" />
 
 - Kiểm tra InfluxDB
-Mở: http://localhost:8086
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/455d91ea-d50e-4e04-9b2a-0cd95b1e2ee1" />
+Mở: http://192.168.1.18:8086
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/2ccd5835-b825-4a6c-831e-63bdf0453802" />
 
 - Kiểm tra MariaDB
 docker exec -it mariadb_bt5 mariadb -u root -p
@@ -100,6 +104,129 @@ docker exec -it mariadb_bt5 mariadb -u root -p
 
 - Kiểm tra dữ liệu: SELECT * FROM realtime_data;
 <img width="525" height="534" alt="image" src="https://github.com/user-attachments/assets/9bbde619-c696-436a-a254-b751582cf748" />
+
+- Kiểm tra flask_api: http://192.168.1.18:5000/api/data
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/788c6d70-e806-48c4-ac35-7a7487dfb14d" />
+
+- Tạo file app.py: nano app.py
+
+<img width="961" height="1066" alt="image" src="https://github.com/user-attachments/assets/f8bfae1d-2e18-4c2c-9877-ea5a957841ab" />
+
+- Tạo requirements.txt: nano requirements.txt
+
+<img width="935" height="844" alt="image" src="https://github.com/user-attachments/assets/650072ff-e777-41ed-81cf-43a251b22e28" />
+
+- Tạo Dockerfile: nano Dockerfile
+
+- Kiểm tra API Chạy: curl localhost:5000/api/data
+
+<img width="815" height="86" alt="image" src="https://github.com/user-attachments/assets/dbd676ba-37b3-4e21-a89b-ff93a7dc862a" />
+
+## Node-RED tự động lấy dữ liệu thời tiết
+ - Mục tiêu: Open-Meteo ↓ Node-RED ↓ MariaDB
+
+- Mỗi 1 phút:
+```
+lấy nhiệt độ Hà Nội
+ghi vào bảng realtime_data
+Cài các node cần thiết cho bài
+```
+``
+-Góc trên bên phải: ☰ -> Manage palette -> Install
+- lần lượt cài:
+
+- MySQL: node-red-node-mysql
+- InfluxDB: node-red-contrib-influxdb
+- Telegram: node-red-contrib-telegrambot
+= sau khi cài xong khởi động lại: docker restart nodered_bt5
+
+```
+SƠ ĐỒ FLOW Bài Tập 5 (PHẦN NODE-RED) Inject ↓ HTTP Request ↓ Function GetTemp ├───────────→ Function SQL → MySQL │ ├───────────→ Function Influx → InfluxDB Out │ └───────────→ Switch ↓ Function Alert ↓ Telegram Sender
+```
+1. KÉO NODE INJECT -> Double click -> Repeat -> interval -> Every 60 -> Seconds seconds -> Done
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a4af9e95-82d1-4df3-9710-d8d85b6c323a" />
+
+2. KÉO NODE HTTP REQUEST -> Nối: Inject với HTTP Request -> Double click -> Method: GET -> URL: https://api.open-meteo.com/v1/forecast?latitude=21.0285&longitude=105.8542&current=temperature_2m -> Return: a parsed JSON object -> Done
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/78ce6129-368c-49e0-9123-77e4ff3cf81a" />
+
+3.KÉO FUNCTION GetTemp: Kéo: Function -> nối HTTP Request với Function -> Double click -> Đổi tên: GetTemp -> code -> done
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/42937065-37ce-48da-8bba-38cca57ca1c7" />
+
+4. KÉO DEBUG -> nối GetTemp với Debug -> deploy -> Nhấn nút Inject -> Debug phải hiện nhiệt độ
+
+<img width="1655" height="356" alt="image" src="https://github.com/user-attachments/assets/8b81394f-654a-4db0-93d6-92a9b875783e" />
+
+5. KÉO FUNCTION SQL : Kéo: Function -> nối GetTemp với Function SQL -> Đổi tên: SQL Insert -> Code -> Done.
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/418c2729-41ec-4ee8-be44-a51e6bddd1c1" />
+
+6. KÉO MYSQL -> Nối: SQL Insert với MySQL -> cấu hình MySQL -> done
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/f0bf0013-83ed-4c88-a7e4-061c59d6c219" />
+
+7. TEST GHI DATABASE Deploy -> Nhấn Inject -> Kiểm tra MariaDB:
+docker exec -it mariadb_bt5 mariadb -u root -p sau đó nhập password, rồi nhập : USE monitordb; SELECT * FROM realtime_data;
+
+<img width="893" height="696" alt="image" src="https://github.com/user-attachments/assets/4ab1deca-a58d-4611-b387-64c084af0725" />
+
+- Node-RED đã ghi được MariaDB. 
+
+8. KÉO FUNCTION INFLUX Kéo:Function-> đổi tên thành Function Influx-> Nối GetTemp với Function Influx -> code -> done
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/573755b3-f674-4fbd-993d-46e43fc3e839" />
+
+9. KÉO INFLUXDB OUT -> Nối Function Influx với InfluxDB Out -> Cấu hình InfluxDB Mở InfluxDB: Mở trình duyệt: http://192.168.1.18:8086 Kiểm tra đã setup InfluxDB chưa Nếu lần đầu mở sẽ có: Get Started phải tạo: Username,Password,Organization,Bucket
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/c178615a-d9e0-4b10-bd18-2885349a22ab" />
+
+<img width="925" height="746" alt="image" src="https://github.com/user-attachments/assets/0150eab1-5fb4-4721-a873-ddf17c28d93e" />
+
+ Vào Node-RED trong cửa sổ cấu hình InfluxDB:
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/587f3705-c302-4122-9350-7550a56be924" />
+
+Sau khi bấm Add, node InfluxDB Out thường sẽ hiện thêm: điền:
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d7017879-645b-4e6e-9a3e-b63237ac5963" />
+
+Test -> Deploy -> Bấm Inject -> Xem node influxdb out có báo lỗi đỏ không nếu không báo lỗi đỏ là đã ok
+
+10. KÉO SWITCH -> Nối: GetTemp với Switch -> cấu hình
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/5092d3bf-3188-475f-b0f5-bc9b9e6fe78d" />
+
+11. KÉO FUNCTION ALERT : kéo Function -> đổi tên thành Function Alert -> Nối cả 2 output của Switch vào Function này-> code -> done
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/54cdcb0d-0adc-4f8e-bd6a-be8b2e90d350" />
+
+12. KÉO TELEGRAM SENDER : Kéo: telegram sender Nối: Function Alert với Telegram Sender -> Cấu hình -> done -> deploy
+( để lấy id nhóm chat ta truy cập vào telegram -> tìm @userinfobot -> nhấn start -> ấn group/ hoặc my group sau đó tìm nhóm chat cần lấy id )
+
+<img width="1920" height="1080" alt="Ảnh chụp màn hình 2026-06-09 225025" src="https://github.com/user-attachments/assets/f980f909-a1e4-4c43-826e-90cbbdb38241" />
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6ea07afa-4279-4b95-81bd-730c8b5e97a5" />
+
+- khi đó bot sẽ gửi tin nhắn cảnh báo nhiệt độ cao -> Hệ thống của bạn hoạt động hoàn toàn bình thường!
+
+
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6ea07afa-4279-4b95-81bd-730c8b5e97a5" />
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/08b81e95-8dd2-4891-9aea-1501806d621d" />
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/f40160c0-afb8-4a01-916c-9fb0ca7e26e0" />
+
+
+
+
+<img width="976" height="1022" alt="image" src="https://github.com/user-attachments/assets/d49db80a-eb25-4667-94db-63a220102c6a" />
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/fdf58469-c7dd-4054-a986-b72a14dc928c" />
+
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6ea07afa-4279-4b95-81bd-730c8b5e97a5" />
 
