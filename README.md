@@ -260,13 +260,48 @@ kiểm tra xem đã hiện biểu đồ chưa: http://192.168.1.18:8088/
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/0a6fe31e-b21c-4191-9b96-658cc2dfd01d" />
 
+## Export/Import Docker
 
+- xem các image đang dùng : docker images
 
+<img width="892" height="340" alt="image" src="https://github.com/user-attachments/assets/71658ec3-c6a1-4abb-b424-a87e2dcaa657" />
 
+- Tạo thư mục backup: mkdir -p ~/bt5-backup
 
+<img width="885" height="140" alt="image" src="https://github.com/user-attachments/assets/dc6ba75b-c8e6-4d7c-b413-5d1c21dd12a8" />
 
+- EXPORT TOÀN BỘ IMAGE
+  + KIỂM TRA FILE ĐÃ TẠO: ls -lh ~/bt5-backup
+  + NÉN FILE: gzip ~/bt5-backup/bt5-images.tar
+<img width="886" height="492" alt="image" src="https://github.com/user-attachments/assets/14b2fbb2-cb41-4160-9673-028e925edbf9" />
 
+- SAO LƯU SOURCE CODE
 
+<img width="911" height="128" alt="image" src="https://github.com/user-attachments/assets/93b22657-309e-4fc5-9bcf-5cf9e2adceec" />
 
+- DỪNG TOÀN BỘ CONTAINER
+<img width="898" height="655" alt="image" src="https://github.com/user-attachments/assets/0c2dcde3-3ab0-448f-9a43-768907989c3d" />
+<img width="900" height="346" alt="image" src="https://github.com/user-attachments/assets/06fe8d15-c320-4d2a-abb7-6611328bbd01" />
+
+- XÓA TOÀN BỘ CONTAINER
+<img width="897" height="664" alt="image" src="https://github.com/user-attachments/assets/6f28e75a-0f33-4601-b02d-b4cb49992566" />
+
+<img width="909" height="314" alt="image" src="https://github.com/user-attachments/assets/9422a629-ea43-4646-ab3a-6d7e275173f3" />
+
+- XÓA IMAGE
+
+<img width="894" height="590" alt="image" src="https://github.com/user-attachments/assets/0a3743dc-ef19-4e7d-be42-40514ffb2bb6" />
+
+- GIẢI NÉN FILE
+<img width="875" height="34" alt="image" src="https://github.com/user-attachments/assets/3e68f65e-5a8f-4b7a-8ef1-8b37711b6a9b" />
+
+- KHÔI PHỤC IMAGE
+
+<img width="893" height="218" alt="image" src="https://github.com/user-attachments/assets/3d2fa504-41aa-47a0-9230-25c95ecafeaa" />
+<img width="908" height="220" alt="image" src="https://github.com/user-attachments/assets/58c827c8-57c8-48da-bfbc-8e4cb61ef3d7" />
+
+- KHÔI PHỤC CONTAINER
+<img width="883" height="257" alt="image" src="https://github.com/user-attachments/assets/783153f2-e3b7-4d1c-a004-2ac548f94598" />
+<img width="908" height="359" alt="image" src="https://github.com/user-attachments/assets/2ce47180-07b7-4fb0-a054-10493139bad7" />
 
 
